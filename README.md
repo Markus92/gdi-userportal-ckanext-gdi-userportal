@@ -1,3 +1,7 @@
+![example workflow](https://github.com/GenomicDataInfrastructure/gdi-userportal-ckanext-gdi-userportal/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/GenomicDataInfrastructure/gdi-userportal-ckanext-gdi-userportal/actions/workflows/release.yml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GenomicDataInfrastructure_gdi-userportal-ckanext-gdi-userportal&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GenomicDataInfrastructure_gdi-userportal-ckanext-gdi-userportal)
+[![GitHub contributors](https://img.shields.io/github/contributors/GenomicDataInfrastructure/gdi-userportal-ckanext-gdi-userportal)](https://github.com/GenomicDataInfrastructure/gdi-userportal-ckanext-gdi-userportal/graphs/contributors)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 
 # ckanext-gdi-userportal
@@ -16,10 +20,8 @@ Compatibility with core CKAN versions:
 
 | CKAN version    | Compatible?   |
 | --------------- | ------------- |
-| 2.6 and earlier | not tested    |
-| 2.7             | not tested    |
-| 2.8             | not tested    |
 | 2.9             | not tested    |
+| 2.10            | yes           |
 
 Suggested values:
 
