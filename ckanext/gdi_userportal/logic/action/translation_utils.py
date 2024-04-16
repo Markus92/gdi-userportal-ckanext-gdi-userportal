@@ -100,6 +100,6 @@ def replace_search_facets(data, translation_dict):
     new_facets = {}
     for key, facet in data.items():
         title = facet["title"]
-        new_facets[key] = {"title": translation_dict.get(title, title)}
+        new_facets[key] = {"title": get_translations([title]).get(title, title)}
         new_facets[key]["items"] = [_change_facet(item, translation_dict) for item in facet["items"]]
-    return data
+    return new_facets
