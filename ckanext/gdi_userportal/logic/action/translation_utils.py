@@ -8,6 +8,18 @@
 from ckan.plugins import toolkit
 from typing import Any, List, Dict
 from ckan.common import request, config
+from dataclasses import dataclass
+
+
+PACKAGE_REPLACE_FIELDS = ["access_rights", "conforms_to", "has_version", "language", "spatial", "theme"]
+RESOURCE_REPLACE_FIELDS = ["format"]
+
+
+@dataclass
+class ValueLabel:
+    name: str
+    display_name: str
+    count: int = None
 
 
 def get_translations(values_to_translate: List) -> Dict[str, str]:
@@ -37,32 +49,57 @@ def _get_language() -> str:
     return language
 
 
-def nested_replace(data: Any, replace_dict: Dict) -> Any:
-    """
-    Walks over a json tree, replaces string values starting with 'http' with value-label objects
-    where 'value' is an original field value and `label` a replacement found in replacement_dict or None
-    """
-    if isinstance(data, list):
-        return [nested_replace(item, replace_dict) for item in data]
-
-    if isinstance(data, dict):
-        return {key: nested_replace(value, replace_dict)
-                for key, value in data.items()}
-
-    if isinstance(data, str) and data.startswith("http"):
-        return {"value": data, "label": replace_dict.get(data, None)}
-    else:
-        return data
+def _select_and_append_values(data_item: Dict, fields_list: List, target_list: List) -> List:
+    for key, value in data_item.items():
+        if key in fields_list:
+            if isinstance(value, list):
+                target_list.extend(value)
+            else:
+                target_list.append(value)
+    return target_list
 
 
-def collect_values_to_translate(data: Any, values_to_translate: List) -> List:
-    """Walks over a json tree and returns a list of string values starting with 'http'"""
-    if isinstance(data, str) and data.startswith("http"):
-        values_to_translate.append(data)
-    elif isinstance(data, list):
-        for item in data:
-            collect_values_to_translate(item, values_to_translate)
-    elif isinstance(data, dict):
-        for key, value in data.items():
-            collect_values_to_translate(value, values_to_translate)
-    return values_to_translate
+def collect_values_to_translate(data: Any) -> List:
+    values_to_translate = []
+    if not isinstance(data, List):
+        data = [data]
+    for package in data:
+        values_to_translate = _select_and_append_values(package, PACKAGE_REPLACE_FIELDS, values_to_translate)
+        resources = package.get("resources", [])
+        for resource in resources:
+            values_to_translate = _select_and_append_values(resource, RESOURCE_REPLACE_FIELDS, values_to_translate)
+    return list(set(values_to_translate))
+
+
+def replace_package(data, translation_dict):
+    data = _translate_fields(data, PACKAGE_REPLACE_FIELDS, translation_dict)
+    resources = data.get("resources", [])
+    data["resources"] = [_translate_fields(item, RESOURCE_REPLACE_FIELDS, translation_dict) for item in resources]
+    return data
+
+
+def _translate_fields(data, fields_list, translation_dict):
+    for field in fields_list:
+        value = data.get(field)
+        if value:
+            if isinstance(value, List):
+                new_value = [ValueLabel(name=x, display_name=translation_dict.get(x, x)).__dict__ for x in value]
+            else:
+                new_value = ValueLabel(name=value, display_name=translation_dict.get(value, value)).__dict__
+            data[field] = new_value
+    return data
+
+
+def _change_facet(facet, translation_dict):
+    name = facet["name"]
+    facet["display_name"] = translation_dict.get(name, name)
+    return facet
+
+
+def replace_search_facets(data, translation_dict):
+    new_facets = {}
+    for key, facet in data.items():
+        title = facet["title"]
+        new_facets[key] = {"title": translation_dict.get(title, title)}
+        new_facets[key]["items"] = [_change_facet(item, translation_dict) for item in facet["items"]]
+    return data

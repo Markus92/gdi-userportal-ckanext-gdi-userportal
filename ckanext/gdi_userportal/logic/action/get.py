@@ -11,10 +11,10 @@ import logging
 
 from ckan.plugins import toolkit
 from ckanext.gdi_userportal.logic.action.translation_utils import (
-    nested_replace,
     collect_values_to_translate,
     get_translations,
 )
+from ckanext.gdi_userportal.logic.action.translation_utils import replace_package, replace_search_facets
 from typing import Dict
 
 log = logging.getLogger(__name__)
@@ -134,22 +134,19 @@ def scheming_package_show(context, data_dict):
 
 
 @toolkit.side_effect_free
-def get_with_url_labels(context, data_dict) -> Dict:
-    """
-    A wrapper for an action function: calls the function and replaces all starting with http string values with
-    value-label object
-    "action_name" should be a valid name of an action function returning a dictionary
-    """
-    try:
-        action_name = data_dict["action_name"]
-    except KeyError:
-        raise KeyError(f"'action_name' parameter should be provided")
-    del data_dict["action_name"]
-    result = toolkit.get_action(action_name)(context, data_dict)
-    values_to_translate = []
-    for key, value in result.items():
-        collect_values_to_translate(value, values_to_translate)
-    values_to_translate = list(set(values_to_translate))
+def enhanced_package_search(context, data_dict) -> Dict:
+    result = toolkit.get_action("package_search")(context, data_dict)
+    values_to_translate = collect_values_to_translate(result)
     translations = get_translations(values_to_translate)
-    result = nested_replace(result, translations)
+    result["results"] = [replace_package(package, translations) for package in result["results"]]
+    if "search_facets" in result.keys():
+        result["search_facets"] = replace_search_facets(result["search_facets"], translations)
     return result
+
+
+@toolkit.side_effect_free
+def enhanced_package_show(context, data_dict) -> Dict:
+    result = toolkit.get_action("package_show")(context, data_dict)
+    values_to_translate = collect_values_to_translate(result)
+    translations = get_translations(values_to_translate)
+    return replace_package(result, translations)
