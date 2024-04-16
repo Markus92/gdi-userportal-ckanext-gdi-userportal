@@ -81,12 +81,13 @@ def replace_package(data, translation_dict):
 def _translate_fields(data, fields_list, translation_dict):
     for field in fields_list:
         value = data.get(field)
+        new_value = None
         if value:
             if isinstance(value, List):
                 new_value = [ValueLabel(name=x, display_name=translation_dict.get(x, x)).__dict__ for x in value]
             else:
                 new_value = ValueLabel(name=value, display_name=translation_dict.get(value, value)).__dict__
-            data[field] = new_value
+        data[field] = new_value
     return data
 
 
