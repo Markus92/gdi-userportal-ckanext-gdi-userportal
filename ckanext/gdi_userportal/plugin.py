@@ -6,7 +6,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.gdi_userportal.logic.action.get import (
-    scheming_package_show,
     enhanced_package_search,
     enhanced_package_show,
 )
@@ -73,7 +72,6 @@ class GdiUserPortalPlugin(plugins.SingletonPlugin):
 
     def get_actions(self):
         return {
-            "scheming_package_show": scheming_package_show,
             "enhanced_package_search": enhanced_package_search,
             "enhanced_package_show": enhanced_package_show,
         }
