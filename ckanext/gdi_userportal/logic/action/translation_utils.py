@@ -11,7 +11,14 @@ from ckan.common import request, config
 from dataclasses import dataclass
 
 
-PACKAGE_REPLACE_FIELDS = ["access_rights", "conforms_to", "has_version", "language", "spatial", "theme"]
+PACKAGE_REPLACE_FIELDS = [
+    "access_rights",
+    "conforms_to",
+    "has_version",
+    "language",
+    "spatial_uri",
+    "theme",
+]
 RESOURCE_REPLACE_FIELDS = ["format"]
 
 
@@ -25,12 +32,14 @@ class ValueLabel:
 def get_translations(values_to_translate: List) -> Dict[str, str]:
     """Calls term_translation_show action with a list of values to translate"""
     language = _get_language()
-    translations = toolkit.get_action('term_translation_show')(
-        {},
-        {'terms': values_to_translate,
-         'lang_codes': language})
+    translations = toolkit.get_action("term_translation_show")(
+        {}, {"terms": values_to_translate, "lang_codes": language}
+    )
 
-    translations = {transl_item["term"]: transl_item["term_translation"] for transl_item in translations}
+    translations = {
+        transl_item["term"]: transl_item["term_translation"]
+        for transl_item in translations
+    }
     return translations
 
 
@@ -40,16 +49,18 @@ def _get_language() -> str:
     """
     language = "en"
     try:
-        language = request.environ['CKAN_LANG']
+        language = request.environ["CKAN_LANG"]
     except (TypeError, KeyError):
         try:
-            language = config['ckan.locale_default']
+            language = config["ckan.locale_default"]
         except KeyError:
             pass
     return language
 
 
-def _select_and_append_values(data_item: Dict, fields_list: List, target_list: List) -> List:
+def _select_and_append_values(
+    data_item: Dict, fields_list: List, target_list: List
+) -> List:
     for key, value in data_item.items():
         if key in fields_list:
             if isinstance(value, list):
@@ -64,17 +75,24 @@ def collect_values_to_translate(data: Any) -> List:
     if not isinstance(data, List):
         data = [data]
     for package in data:
-        values_to_translate = _select_and_append_values(package, PACKAGE_REPLACE_FIELDS, values_to_translate)
+        values_to_translate = _select_and_append_values(
+            package, PACKAGE_REPLACE_FIELDS, values_to_translate
+        )
         resources = package.get("resources", [])
         for resource in resources:
-            values_to_translate = _select_and_append_values(resource, RESOURCE_REPLACE_FIELDS, values_to_translate)
+            values_to_translate = _select_and_append_values(
+                resource, RESOURCE_REPLACE_FIELDS, values_to_translate
+            )
     return list(set(values_to_translate))
 
 
 def replace_package(data, translation_dict):
     data = _translate_fields(data, PACKAGE_REPLACE_FIELDS, translation_dict)
     resources = data.get("resources", [])
-    data["resources"] = [_translate_fields(item, RESOURCE_REPLACE_FIELDS, translation_dict) for item in resources]
+    data["resources"] = [
+        _translate_fields(item, RESOURCE_REPLACE_FIELDS, translation_dict)
+        for item in resources
+    ]
     return data
 
 
@@ -84,9 +102,14 @@ def _translate_fields(data, fields_list, translation_dict):
         new_value = None
         if value:
             if isinstance(value, List):
-                new_value = [ValueLabel(name=x, display_name=translation_dict.get(x, x)).__dict__ for x in value]
+                new_value = [
+                    ValueLabel(name=x, display_name=translation_dict.get(x, x)).__dict__
+                    for x in value
+                ]
             else:
-                new_value = ValueLabel(name=value, display_name=translation_dict.get(value, value)).__dict__
+                new_value = ValueLabel(
+                    name=value, display_name=translation_dict.get(value, value)
+                ).__dict__
         data[field] = new_value
     return data
 
@@ -102,5 +125,7 @@ def replace_search_facets(data, translation_dict):
     for key, facet in data.items():
         title = facet["title"]
         new_facets[key] = {"title": get_translations([title]).get(title, title)}
-        new_facets[key]["items"] = [_change_facet(item, translation_dict) for item in facet["items"]]
+        new_facets[key]["items"] = [
+            _change_facet(item, translation_dict) for item in facet["items"]
+        ]
     return new_facets
