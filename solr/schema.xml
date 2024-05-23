@@ -160,6 +160,7 @@ attribute with the form `ckan-X.Y` -->
         <field name="provenance" type="string" indexed="true" stored="true" multiValued="false" />
         <field name="spatial_uri" type="string" indexed="true" stored="true" multiValued="false" />
         <field name="contact_uri" type="string" indexed="true" stored="true" multiValued="false" />
+        <field name="contact_point" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="resources_formats" type="string" indexed="true" stored="true"
             multiValued="true" />
         <field name="publisher_name" type="string" indexed="true" stored="true" multiValued="false" />
