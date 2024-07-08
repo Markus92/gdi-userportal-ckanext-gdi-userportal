@@ -332,14 +332,36 @@
     },
     {
       "field_name": "creator",
-      "label": {
-        "en": "Creator"
-      },
       "help_inline": true,
       "help_text": {
-        "en": "[dct:creator] This property refers to the  entity responsible for producing the dataset."
-      }
-    },
+          "en": "[dct:creator] The entity responsible for producing the resource."
+      },
+      "label": {
+          "en": "Creator"
+      },
+      "repeating_subfields": [
+          {
+              "field_name": "creator_identifier",
+              "help_inline": true,
+              "help_text": {
+                  "en": "[dct:identifier] Unique identification of the person/organisation."
+              },
+              "label": {
+                  "en": "Creator URI"
+              }
+          },
+          {
+              "field_name": "creator_name",
+              "label": {
+                  "en": "Creator Name"
+              },
+              "help_inline": true,
+              "help_text": {
+                  "en": "[foaf:name] This property contains the name of the creator."
+              }
+          }
+      ]
+  },
     {
       "field_name": "is_referenced_by",
       "label": {
