@@ -2,7 +2,6 @@
 # SPDX-FileContributor: Stichting Health-RI
 #
 # SPDX-License-Identifier: Apache-2.0
-from ckan import model
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
@@ -114,8 +113,7 @@ class GdiUserPortalPlugin(plugins.SingletonPlugin):
     def before_dataset_index(self, data_dict):
         for field in self._dcatap_fields_to_normalize:
             data_dict = self._parse_to_array(data_dict, field)
-
-        # Gets the full Schema definition of the correct dataset
+        
         context = {"model": model, "session": model.Session}
         dataset_dict = {"type": "dataset"}
         schema = toolkit.get_action("scheming_dataset_schema_show")(context, dataset_dict)
@@ -126,6 +124,7 @@ class GdiUserPortalPlugin(plugins.SingletonPlugin):
                 data_dict[field] = [json.dumps(x) for x in data_dict[field]]
             except (json.JSONDecodeError, KeyError):
                 pass
+
 
         if data_dict.get("res_format"):
             data_dict["res_format"] = list(dict.fromkeys(data_dict.get("res_format")))

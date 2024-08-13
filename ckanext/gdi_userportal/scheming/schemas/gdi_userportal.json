@@ -114,47 +114,35 @@
       }
     },
     {
-      "field_name": "contact_point",
+      "field_name": "contact_uri",
       "help_inline": true,
       "help_text": {
         "en": "[dcat:contactPoint] This property contains contact information that can be used for sending comments about the Dataset."
       },
       "label": {
-        "en": "Contact Point"
+        "en": "Contact URI"
+      }
+    },
+    {
+      "field_name": "contact_name",
+      "label": {
+        "en": "Contact Name"
       },
-      "repeating_subfields": [
-        {
-          "field_name": "contact_uri",
-          "help_inline": true,
-          "help_text": {
-            "en": "[dcat:contactPoint] This property contains contact information that can be used for sending comments about the Dataset."
-          },
-          "label": {
-          "en": "Contact URI"
-          }
-        },
-        {
-          "field_name": "contact_name",
-          "label": {
-            "en": "Contact Name"
-          },
-          "help_inline": true,
-          "help_text": {
-            "en": "[vcard:fn] This property contains contact information that can be used for sending comments about the Dataset."
-          }
-        },
-        {
-          "field_name": "contact_email",
-          "help_inline": true,
-          "help_text": {
-            "en": "[vcard:hasEmail] This property contains contact information that can be used for sending comments about the Dataset."
-          },
-          "label": {
-            "en": "Contact Email"
-          },
-          "display_snippet": "email.html"
-        }
-      ]
+      "help_inline": true,
+      "help_text": {
+        "en": "[vcard:fn] This property contains contact information that can be used for sending comments about the Dataset."
+      }
+    },
+    {
+      "field_name": "contact_email",
+      "help_inline": true,
+      "help_text": {
+        "en": "[vcard:hasEmail] This property contains contact information that can be used for sending comments about the Dataset."
+      },
+      "label": {
+        "en": "Contact Email"
+      },
+      "display_snippet": "email.html"
     },
     {
       "field_name": "publisher_uri",
