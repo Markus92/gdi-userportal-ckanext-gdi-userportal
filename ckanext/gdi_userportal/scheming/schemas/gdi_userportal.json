@@ -130,7 +130,7 @@
             "en": "[dcat:contactPoint] This property contains contact information that can be used for sending comments about the Dataset."
           },
           "label": {
-          "en": "Contact URI"
+            "en": "Contact URI"
           }
         },
         {
@@ -334,34 +334,34 @@
       "field_name": "creator",
       "help_inline": true,
       "help_text": {
-          "en": "[dct:creator] The entity responsible for producing the resource."
+        "en": "[dct:creator] The entity responsible for producing the resource."
       },
       "label": {
-          "en": "Creator"
+        "en": "Creator"
       },
       "repeating_subfields": [
-          {
-              "field_name": "creator_identifier",
-              "help_inline": true,
-              "help_text": {
-                  "en": "[dct:identifier] Unique identification of the person/organisation."
-              },
-              "label": {
-                  "en": "Creator URI"
-              }
+        {
+          "field_name": "creator_identifier",
+          "help_inline": true,
+          "help_text": {
+            "en": "[dct:identifier] Unique identification of the person/organisation."
           },
-          {
-              "field_name": "creator_name",
-              "label": {
-                  "en": "Creator Name"
-              },
-              "help_inline": true,
-              "help_text": {
-                  "en": "[foaf:name] This property contains the name of the creator."
-              }
+          "label": {
+            "en": "Creator URI"
           }
+        },
+        {
+          "field_name": "creator_name",
+          "label": {
+            "en": "Creator Name"
+          },
+          "help_inline": true,
+          "help_text": {
+            "en": "[foaf:name] This property contains the name of the creator."
+          }
+        }
       ]
-  },
+    },
     {
       "field_name": "is_referenced_by",
       "label": {
