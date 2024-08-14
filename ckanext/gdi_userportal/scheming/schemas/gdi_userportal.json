@@ -114,35 +114,47 @@
       }
     },
     {
-      "field_name": "contact_uri",
+      "field_name": "contact_point",
       "help_inline": true,
       "help_text": {
         "en": "[dcat:contactPoint] This property contains contact information that can be used for sending comments about the Dataset."
       },
       "label": {
-        "en": "Contact URI"
-      }
-    },
-    {
-      "field_name": "contact_name",
-      "label": {
-        "en": "Contact Name"
+        "en": "Contact Point"
       },
-      "help_inline": true,
-      "help_text": {
-        "en": "[vcard:fn] This property contains contact information that can be used for sending comments about the Dataset."
-      }
-    },
-    {
-      "field_name": "contact_email",
-      "help_inline": true,
-      "help_text": {
-        "en": "[vcard:hasEmail] This property contains contact information that can be used for sending comments about the Dataset."
-      },
-      "label": {
-        "en": "Contact Email"
-      },
-      "display_snippet": "email.html"
+      "repeating_subfields": [
+        {
+          "field_name": "contact_uri",
+          "help_inline": true,
+          "help_text": {
+            "en": "[dcat:contactPoint] This property contains contact information that can be used for sending comments about the Dataset."
+          },
+          "label": {
+            "en": "Contact URI"
+          }
+        },
+        {
+          "field_name": "contact_name",
+          "label": {
+            "en": "Contact Name"
+          },
+          "help_inline": true,
+          "help_text": {
+            "en": "[vcard:fn] This property contains contact information that can be used for sending comments about the Dataset."
+          }
+        },
+        {
+          "field_name": "contact_email",
+          "help_inline": true,
+          "help_text": {
+            "en": "[vcard:hasEmail] This property contains contact information that can be used for sending comments about the Dataset."
+          },
+          "label": {
+            "en": "Contact Email"
+          },
+          "display_snippet": "email.html"
+        }
+      ]
     },
     {
       "field_name": "publisher_uri",
@@ -322,34 +334,34 @@
       "field_name": "creator",
       "help_inline": true,
       "help_text": {
-          "en": "[dct:creator] The entity responsible for producing the resource."
+        "en": "[dct:creator] The entity responsible for producing the resource."
       },
       "label": {
-          "en": "Creator"
+        "en": "Creator"
       },
       "repeating_subfields": [
-          {
-              "field_name": "creator_identifier",
-              "help_inline": true,
-              "help_text": {
-                  "en": "[dct:identifier] Unique identification of the person/organisation."
-              },
-              "label": {
-                  "en": "Creator URI"
-              }
+        {
+          "field_name": "creator_identifier",
+          "help_inline": true,
+          "help_text": {
+            "en": "[dct:identifier] Unique identification of the person/organisation."
           },
-          {
-              "field_name": "creator_name",
-              "label": {
-                  "en": "Creator Name"
-              },
-              "help_inline": true,
-              "help_text": {
-                  "en": "[foaf:name] This property contains the name of the creator."
-              }
+          "label": {
+            "en": "Creator URI"
           }
+        },
+        {
+          "field_name": "creator_name",
+          "label": {
+            "en": "Creator Name"
+          },
+          "help_inline": true,
+          "help_text": {
+            "en": "[foaf:name] This property contains the name of the creator."
+          }
+        }
       ]
-  },
+    },
     {
       "field_name": "is_referenced_by",
       "label": {

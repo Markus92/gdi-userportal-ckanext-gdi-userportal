@@ -159,7 +159,9 @@ attribute with the form `ckan-X.Y` -->
         <field name="uri" type="string" indexed="true" stored="true" multiValued="false" />
         <field name="provenance" type="string" indexed="true" stored="true" multiValued="false" />
         <field name="spatial_uri" type="string" indexed="true" stored="true" multiValued="false" />
-        <field name="contact_uri" type="string" indexed="true" stored="true" multiValued="false" />
+        <field name="contact_point" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="contact_email" type="string" indexed="true" stored="true" />
+        <field name="contact_uri" type="string" indexed="true" stored="true" />
         <field name="contact_name" type="text_general" indexed="true" stored="true" />
         <field name="creator" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="creator_name" type="text_general" indexed="true" stored="true" />
