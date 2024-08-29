@@ -14,7 +14,7 @@ not_empty = get_validator("not_empty")
 
 
 def enforce_utc_time(dt: datetime) -> datetime:
-    """This function ensures a datetime object is always in UTC time.
+    """This function ensures a datetime object is always in UTC time with second accuracy.
 
     If no timezone is specified, it is presumed to be UTC time.
 
@@ -29,6 +29,9 @@ def enforce_utc_time(dt: datetime) -> datetime:
         Datetime object in UTC time
 
     """
+    # Cut off microseconds, we don't need that much accuracy
+    dt = dt.replace(microsecond=0)
+
     if not dt.tzinfo:
         out_date = dt.replace(tzinfo=pytz.UTC)
     else:

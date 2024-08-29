@@ -26,9 +26,9 @@ def time_nye():
         # Time ahead
         pytz.timezone("CET").localize(datetime(2020, 1, 1, 1, 0)),
         # Time behind
-        pytz.timezone("America/Chicago").localize(datetime(2019, 12, 31, 18, 0)),
-        # Timezone with more than just hours
-        pytz.timezone("Asia/Kolkata").localize(datetime(2020, 1, 1, 5, 30)),
+        pytz.timezone("America/Chicago").localize(datetime(2019, 12, 31, 18, 0, 0)),
+        # Timezone with more than just hours and microseconds
+        pytz.timezone("Asia/Kolkata").localize(datetime(2020, 1, 1, 5, 30, 0, 987654)),
     ],
 )
 def test_utc_enforcer(time, time_nye):
