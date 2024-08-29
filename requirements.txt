@@ -1,2 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Stichting Health-RI
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # CKAN requires 2.9.0, we are slightly less picky
 python-dateutil >= 2.8.1
+pytz
