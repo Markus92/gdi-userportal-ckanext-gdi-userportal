@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: His Majesty the King in Right of Canada, His Majesty the King in Right of Canada, represented by the President of the Treasury Board
+# SPDX-FileCopyrightText: His Majesty the King in Right of Canada, represented by the President of the Treasury Board
 # SPDX-FileContributor: Stichting Health-RI
 #
 # SPDX-License-Identifier: MIT
@@ -8,9 +8,33 @@ from datetime import datetime
 import pytz
 from ckanext.scheming.validation import register_validator, scheming_validator
 from ckantoolkit import Invalid, _, get_validator
-from dateutil.parser import ParserError, isoparse
+from dateutil.parser import isoparse
 
 not_empty = get_validator("not_empty")
+
+
+def enforce_utc_time(dt: datetime) -> datetime:
+    """This function ensures a datetime object is always in UTC time.
+
+    If no timezone is specified, it is presumed to be UTC time.
+
+    Parameters
+    ----------
+    dt : datetime
+        Datetime object to be set to UTC time
+
+    Returns
+    -------
+    datetime
+        Datetime object in UTC time
+
+    """
+    if not dt.tzinfo:
+        out_date = dt.replace(tzinfo=pytz.UTC)
+    else:
+        out_date = dt.astimezone(pytz.UTC)
+
+    return out_date
 
 
 def validate_datetime_flex_inputs(
@@ -44,7 +68,7 @@ def validate_datetime_flex_inputs(
     if date_value:
         try:
             date = isoparse(date_value)
-        except (TypeError, ValueError) as e:
+        except (TypeError, ValueError):
             errors[date_key].append(date_error)
 
     time_key, time_value = get_input("time")
@@ -55,7 +79,7 @@ def validate_datetime_flex_inputs(
             try:
                 value_full = f"{date_value}T{time_value}"
                 date = isoparse(value_full)
-            except (TypeError, ValueError) as e:
+            except (TypeError, ValueError):
                 errors[time_key].append(time_error)
     else:
         date = date.replace(hour=12)
@@ -69,30 +93,6 @@ def validate_datetime_flex_inputs(
                 date = pytz.timezone(tz_value).localize(date)
 
     return date
-
-
-def enforce_utc_time(dt: datetime) -> datetime:
-    """This function ensures a datetime object is always in UTC time.
-
-    If no timezone is specified, it is presumed to be UTC time.
-
-    Parameters
-    ----------
-    dt : datetime
-        Datetime object to be set to UTC time
-
-    Returns
-    -------
-    datetime
-        Datetime object in UTC time
-
-    """
-    if not dt.tzinfo:
-        out_date = dt.replace(tzinfo=pytz.UTC)
-    else:
-        out_date = dt.astimezone(pytz.UTC)
-
-    return out_date
 
 
 @register_validator
