@@ -32,4 +32,6 @@ def time_nye():
     ],
 )
 def test_utc_enforcer(time, time_nye):
-    assert validation.enforce_utc_time(time) == time_nye
+    result = validation.enforce_utc_time(time)
+    assert result == time_nye
+    assert result.tzinfo == pytz.UTC
