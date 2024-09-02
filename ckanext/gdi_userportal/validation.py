@@ -85,7 +85,8 @@ def validate_datetime_flex_inputs(
             except (TypeError, ValueError):
                 errors[time_key].append(time_error)
     else:
-        date = date.replace(hour=12)
+        if isinstance(date, datetime):
+            date.replace(hour=12)
 
     tz_key, tz_value = get_input("tz")
     if tz_value:
@@ -130,8 +131,9 @@ def scheming_isodatetime_flex(field, schema):
                 date = validate_datetime_flex_inputs(
                     field, key, data, extras, errors, context
                 )
+        if date:
+            date = enforce_utc_time(date)
 
-        utc_date = enforce_utc_time(date)
-        data[key] = utc_date
+        data[key] = date
 
     return validator

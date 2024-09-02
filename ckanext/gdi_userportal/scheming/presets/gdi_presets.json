@@ -6,8 +6,8 @@
         {
             "preset_name": "datetime_flex",
             "values": {
-                "form_snippet": "datetime_tz.html",
-                "display_snippet": "datetime_tz.html",
+                "form_snippet": "datetime.html",
+                "display_snippet": "datetime.html",
                 "validators": "scheming_isodatetime_flex convert_to_json_if_datetime"
             }
         }
