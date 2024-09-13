@@ -16,13 +16,6 @@ from typing import Dict
 log = logging.getLogger(__name__)
 
 
-def handle_exception(e: Exception, message: str):
-    log.error(f"{message}: %s", str(e))
-    if isinstance(e, toolkit.ObjectNotFound):
-        raise toolkit.ObjectNotFound("No results found for the provided query.")
-    raise toolkit.ValidationError(f"An error occurred: {str(e)}")
-
-
 @toolkit.side_effect_free
 def enhanced_package_search(context, data_dict=None) -> Dict:
     data_dict = data_dict or toolkit.request.json
@@ -45,4 +38,11 @@ def enhanced_package_search(context, data_dict=None) -> Dict:
 
         return result
     except Exception as e:
-        handle_exception(e, "Error in enhanced_package_search")
+        _handle_exception(e, "Error in enhanced_package_search")
+
+
+def _handle_exception(e: Exception, message: str):
+    log.error(f"{message}: %s", str(e))
+    if isinstance(e, toolkit.ObjectNotFound):
+        raise toolkit.ObjectNotFound("No results found for the provided query.")
+    raise toolkit.ValidationError(f"An error occurred: {str(e)}")
