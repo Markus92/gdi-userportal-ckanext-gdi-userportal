@@ -16,7 +16,6 @@ from ckanext.gdi_userportal.validation import scheming_isodatetime_flex
 
 from ckan import model
 
-
 class GdiUserPortalPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IFacets, inherit=True)
@@ -105,7 +104,23 @@ class GdiUserPortalPlugin(plugins.SingletonPlugin):
     def after_dataset_search(self, search_results, search_params):
         return search_results
 
-    def before_dataset_index(self, data_dict):       
+    def _parse_to_array(self, data_dict, field):
+         extras_field = f"extras_{field}"
+         if data_dict.get(extras_field):
+             try:
+                 data_dict[field] = json.loads(data_dict[extras_field])
+             except json.JSONDecodeError:
+                 data_dict[field] = data_dict[extras_field]
+             del data_dict[extras_field]
+         return data_dict
+
+    def before_dataset_index(self, data_dict):
+        for field in self._dcatap_fields_to_normalize:
+            data_dict = self._parse_to_array(data_dict, field)
+
+        if data_dict.get("res_format"):
+            data_dict["res_format"] = list(dict.fromkeys(data_dict.get("res_format")))
+
         return data_dict
 
     def before_dataset_view(self, pkg_dict):
