@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
@@ -12,8 +11,6 @@ from ckan.common import config, request
 
 # -*- coding: utf-8 -*-
 from ckan.plugins import toolkit
-
-log = logging.getLogger(__name__)
 
 PACKAGE_REPLACE_FIELDS = [
     "access_rights",
